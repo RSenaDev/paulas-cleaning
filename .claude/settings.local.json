@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-Command *)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\Sena\\\\Desktop\\\\paulas cleaning\" -Recurse | Where-Object { !$_.PSIsContainer } | Select-Object -ExpandProperty FullName)",
+      "PowerShell(Get-ChildItem 'c:\\\\Users\\\\Sena\\\\Desktop\\\\PH TEMP' -File | Where-Object { $_.Extension -match '\\\\.\\(jpg|jpeg|png|gif|webp\\)' } | Select-Object -ExpandProperty FullName2)",
+      "WebSearch",
+      "WebFetch(domain:unsplash.com)",
+      "PowerShell(winget *)",
+      "Bash(gh auth *)",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ]
+  }
+}
