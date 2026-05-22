@@ -1,19 +1,7 @@
-import { useState } from 'react'
-
-const INITIAL = { name: '', email: '', phone: '', service: '', message: '' }
+import { useForm, ValidationError } from '@formspree/react'
 
 export default function Contact() {
-  const [form, setForm] = useState(INITIAL)
-  const [sent, setSent] = useState(false)
-
-  const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
-
-  const onSubmit = (e) => {
-    e.preventDefault()
-    // TODO: connect to a real email service (e.g. EmailJS or Formspree)
-    setSent(true)
-    setForm(INITIAL)
-  }
+  const [state, handleSubmit] = useForm('xaqkjywk')
 
   return (
     <section className="section section-bg" id="contact">
@@ -49,8 +37,8 @@ export default function Contact() {
           </div>
 
           {/* Contact form */}
-          <form className="contact-form" onSubmit={onSubmit}>
-            {sent && (
+          <form className="contact-form" onSubmit={handleSubmit}>
+            {state.succeeded && (
               <div className="success-msg">
                 <i className="fas fa-check"></i> Message sent! We'll get back to you soon.
               </div>
@@ -59,22 +47,23 @@ export default function Contact() {
             <div className="form-row">
               <div className="form-group">
                 <label>Name</label>
-                <input name="name" value={form.name} onChange={onChange} placeholder="Your name" required />
+                <input name="name" placeholder="Your name" required />
               </div>
               <div className="form-group">
                 <label>Phone</label>
-                <input name="phone" value={form.phone} onChange={onChange} placeholder="(555) 000-0000" />
+                <input name="phone" placeholder="(555) 000-0000" />
               </div>
             </div>
 
             <div className="form-group">
               <label>Email</label>
-              <input name="email" type="email" value={form.email} onChange={onChange} placeholder="you@email.com" required />
+              <input name="email" type="email" placeholder="you@email.com" required />
+              <ValidationError field="email" errors={state.errors} />
             </div>
 
             <div className="form-group">
               <label>Service</label>
-              <select name="service" value={form.service} onChange={onChange} required>
+              <select name="service" required>
                 <option value="">Select a service...</option>
                 <option>Regular Home Cleaning</option>
                 <option>Deep Cleaning</option>
@@ -88,11 +77,12 @@ export default function Contact() {
 
             <div className="form-group">
               <label>Message</label>
-              <textarea name="message" value={form.message} onChange={onChange} placeholder="Tell us about your space and needs..." />
+              <textarea name="message" placeholder="Tell us about your space and needs..." />
+              <ValidationError field="message" errors={state.errors} />
             </div>
 
-            <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
-              Send Message
+            <button type="submit" className="btn btn-primary" style={{ width: '100%' }} disabled={state.submitting}>
+              {state.submitting ? 'Sending...' : 'Send Message'}
             </button>
           </form>
         </div>
